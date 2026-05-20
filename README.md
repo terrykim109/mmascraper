@@ -1,4 +1,4 @@
 # mmascraper
 
-Mixed Martial Arts, MMA for short, has arguably been the most rapidly growing sport of the last decade. Having been a fan of the sport for many years as it evolved from niche status into a popular mainstream sport, this is my attempt at using Python to create a website that would make data from the world's most prominent mma organization, Ultimate Fighting Championship(UFC), more readily accessible for the fans for discussion, entertainment, and more.
+Mixed Martial Arts (MMA), arguably the fastest-growing sport of the past decade, has evolved from a niche interest into a mainstream fixture. As a longtime fan of the sport, I wanted to use Python to create a website that makes data from the world’s leading MMA organization, the Ultimate Fighting Championship (UFC), more accessible to fans for discussion, entertainment, and more.
 
