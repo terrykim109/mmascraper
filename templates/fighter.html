@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fighter Details</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <a href="/">← Back to fighters</a>
+    <div id="fighter-details">
+        <p>Loading fighter details...</p>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const url = params.get('url');
+
+        fetch(`/api/fighter?url=${encodeURIComponent(url)}`)
+            .then(res => res.json())
+            .then(d => {
+                document.getElementById('fighter-details').innerHTML = `
+                    <h1>${d.Name} ${d.Nickname ? `<span class="nickname">"${d.Nickname}"</span>` : ''}</h1>
+                    <h3>${d.Record}</h3>
+
+                    <h2>Fighter Info</h2>
+                    <ul>
+                        <li><strong>Height:</strong> ${d.Height}</li>
+                        <li><strong>Weight:</strong> ${d.Weight}</li>
+                        <li><strong>Reach:</strong> ${d.Reach}</li>
+                        <li><strong>Stance:</strong> ${d.Stance}</li>
+                        <li><strong>DOB:</strong> ${d.DOB}</li>
+                    </ul>
+
+                    <h2>Striking Stats</h2>
+                    <ul>
+                        <li><strong>Strikes Landed per Min:</strong> ${d['SLpM']}</li>
+                        <li><strong>Striking Accuracy:</strong> ${d['Str. Acc.']}</li>
+                        <li><strong>Strikes Absorbed per Min:</strong> ${d['SApM']}</li>
+                        <li><strong>Strike Defence:</strong> ${d['Str. Def.']}</li>
+                    </ul>
+
+                    <h2>Grappling Stats</h2>
+                    <ul>
+                        <li><strong>Takedown Avg:</strong> ${d['TD Avg.']}</li>
+                        <li><strong>Takedown Accuracy:</strong> ${d['TD Acc.']}</li>
+                        <li><strong>Takedown Defence:</strong> ${d['TD Def.']}</li>
+                        <li><strong>Submission Avg:</strong> ${d['Sub. Avg.']}</li>
+                    </ul>
+
+                    <h2>Fight History</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Result</th>
+                                <th>Opponent</th>
+                                <th>Event</th>
+                                <th>Method</th>
+                                <th>Round</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${d.Fights.map(f => `
+                                <tr>
+                                    <td>${f.result}</td>
+                                    <td>${f.opponent}</td>
+                                    <td>${f.event}</td>
+                                    <td>${f.method}</td>
+                                    <td>${f.round}</td>
+                                    <td>${f.time}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            })
+            .catch(err => {
+                document.getElementById('fighter-details').innerHTML = '<p>Failed to load fighter details.</p>';
+                console.error(err);
+            });
+    </script>
+</body>
+</html>
