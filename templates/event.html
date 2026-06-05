@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <a href="javascript:history.back()">← Back</a>
+    <div id="event-details">
+        <p>Loading event</p>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const url = params.get('url');
+
+        fetch(`/api/event?url=${encodeURIComponent(url)}`)
+            .then(res => res.json())
+            .then(d => {
+                document.getElementById('event-details').innerHTML = `
+                    <h1>${d.name}</h1>
+                    <p><strong>Date:</strong> ${d.date}</p>
+                    <p><strong>Location:</strong> ${d.location}</p>
+
+                    <h2>Fight Card</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Winner</th>
+                                <th>Loser</th>
+                                <th>Method</th>
+                                <th>Round</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${d.fights.map(f => `
+                                <tr>
+                                    <td>${f.fighter1}</td>
+                                    <td>${f.fighter2}</td>
+                                    <td>${f.method}</td>
+                                    <td>${f.round}</td>
+                                    <td>${f.time}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            })
+            .catch(err => {
+                document.getElementById('event-details').innerHTML = '<p>Failed to load event.</p>';
+                console.error(err);
+            });
+    </script>
+</body>
+</html>

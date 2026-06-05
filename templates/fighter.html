@@ -7,9 +7,9 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <a href="/">← Back to fighters</a>
+    <a href="/">Back to fighters</a>
     <div id="fighter-details">
-        <p>Loading fighter details...</p>
+        <p>Loading fighter details</p>
     </div>
 
     <script>
@@ -65,7 +65,10 @@
                                 <tr>
                                     <td>${f.result}</td>
                                     <td>${f.opponent}</td>
-                                    <td>${f.event}</td>
+                                    <td>${f.event_link 
+                                        ? `<a href="/event?url=${encodeURIComponent(f.event_link)}">${f.event}</a>` 
+                                        : f.event}
+                                    </td>
                                     <td>${f.method}</td>
                                     <td>${f.round}</td>
                                     <td>${f.time}</td>
